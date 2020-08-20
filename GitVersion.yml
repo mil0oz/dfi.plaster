@@ -1,0 +1,12 @@
+next-version: 1.0
+mode: Mainline
+branches:
+  develop:
+    increment: patch
+    tag: dev
+  master:
+    increment: patch
+    tag: master
+ignore:
+  sha: []
+merge-message-formats: {}

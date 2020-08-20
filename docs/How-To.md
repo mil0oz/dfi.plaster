@@ -39,7 +39,7 @@ Invoke-Plaster @plaster
 
 This will generate a new module wireframe on your default profile path.
 
-### Default function structure
+### Default function **structure**
 
 By default the new module will be structured as:
 
