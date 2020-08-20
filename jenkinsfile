@@ -1,0 +1,73 @@
+pipeline {
+    agent {
+        label 'posh'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr:'20'))
+    }
+
+    stages {
+        stage('Clean') {
+            steps {
+                bat 'git clean -xfd';
+            }
+        }
+        stage('Dependancy Install') {
+            steps {
+                PreReqInstall()
+            }
+        }
+        stage('Build Module') {
+            steps{
+                Build()
+            }
+        }
+        stage('Test Module') {
+            when {
+                expression {
+                    GIT_BRANCH != 'master';
+                }
+            }
+            steps {
+                Tests()
+            }
+        }
+        stage('Publish Module') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS';
+              }
+            }
+            steps {
+                PublishModule()
+            }
+        }
+    }
+    post {
+        // only triggered when blue or green sign
+       success {
+           deleteDir()
+       }
+    }
+}
+
+def PreReqInstall() {
+    powershell ". .\\CI\\JenkinsInstall.ps1"
+}
+
+def Build() {
+    powershell ". .\\CI\\JenkinsBuild.ps1"
+}
+
+def Tests() {
+    powershell script: '''
+        Invoke-Pester .\\tests\\Help.Tests.ps1
+        Invoke-Pester .\\tests\\Feature.Tests.ps1
+        Invoke-Pester .\\tests\\Project.Tests.ps1
+    '''
+}
+
+def PublishModule() {
+    powershell ". .\\CI\\JenkinsPublish.ps1"
+}

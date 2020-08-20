@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>FullModuleTemplate</name>
+    <id>d9df301f-04f5-48e8-aae4-320e50174f55</id>
+    <version>0.0.1</version>
+    <title>Full Module Template</title>
+    <description></description>
+    <author></author>
+    <tags></tags>
+  </metadata>
+  <parameters>
+    <parameter name="ModuleName" type="text" prompt="Name of your module" />
+    <parameter name="FullName" type="text" prompt="Module author's name" />
+    <parameter name="CompanyName" type="text" prompt="Name of your company" />
+    <parameter name="ModuleDesc" type="text" prompt="Brief description on this module" />
+    <parameter name="Version" type="text" prompt="Initial module version" default="0.0.1" />
+</parameters>
+  <content>
+    <message>
+    Creating folder structure:
+    </message>
+    <file source='' destination='ci'/>
+    <file source='' destination='docs'/>
+    <file source='' destination='functions'/>
+    <file source='' destination='internal'/>
+    <file source='' destination='tests'/>
+    <message>
+    Deploying common files:
+    </message>
+    <file source='.gitignore' destination=''/>
+    <templateFile source='Jenkinsfile' destination=''/>
+    <templateFile source='docs\readme.md' destination='README.md'/>
+    <templateFile source='tests\Project.Tests.ps1' destination=''/>
+    <templateFile source='tests\Help.Tests.ps1' destination=''/>
+    <templateFile source='tests\Feature.Tests.ps1' destination=''/>
+    <templateFile source='tests\Regression.Tests.ps1' destination=''/>
+    <templateFile source='tests\Unit.Tests.ps1' destination=''/>
+    <templateFile source='tests\Help.Exceptions.ps1' destination=''/>
+    <templateFile source='docs\ReleaseNotes.txt' destination=''/>
+    <templateFile source='ci\JenkinsPublish.ps1' destination=''/>
+    <templateFile source='ci\JenkinsBuild.ps1' destination=''/>
+    <templateFile source='ci\JenkinsInstall.ps1' destination=''/>
+    <templateFile source='functions\Verb-Noun.ps1' destination=''/>
+    <templateFile source='internal\Verb-Noun.ps1' destination=''/>
+    <templateFile source='GitVersion.yml' destination=''/>
+    <templateFile source='UpdateDocs.ps1' destination=''/>
+    <file source='module.psm1' destination='${PLASTER_PARAM_ModuleName}.psm1'/>
+     <message>
+    Creating Module Manifest: ${PLASTER_PARAM_ModuleName}.psm1
+    </message>
+    <newModuleManifest
+    destination='${PLASTER_PARAM_ModuleName}.psd1'
+    moduleVersion='$PLASTER_PARAM_Version'
+    companyName='$PLASTER_PARAM_CompanyName'
+    rootModule='${PLASTER_PARAM_ModuleName}.psm1'
+    author='$PLASTER_PARAM_FullName'
+    description='$PLASTER_PARAM_ModuleDesc'
+    encoding='UTF8-NoBOM'/>
+    <message>
+    Created module: ${PLASTER_PARAM_ModuleName}
+    </message>
+  </content>
+</plasterManifest>
